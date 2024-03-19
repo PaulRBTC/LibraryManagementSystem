@@ -35,6 +35,8 @@
 	<Folder Include="Assets\" />
 	<Resource Include="Assets/book.ico" />
 	<Resource Include="Assets/refresh.ico" />
+	<Resource Include="Assets/plus.ico" />
+	<Resource Include="Assets/down-arrow.ico" />
   </ItemGroup>
 
 </Project>

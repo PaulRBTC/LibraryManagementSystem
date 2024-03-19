@@ -11,6 +11,8 @@
     <Window.Resources>
         <conv:BoolToCheckmarkConverter x:Key="BoolToCheckmarkConverter"></conv:BoolToCheckmarkConverter>
         <Image x:Key="RefreshIcon" Source="/Assets/refresh.ico" />
+        <Image x:Key="AddIcon" Source="/Assets/plus.ico" />
+        <Image x:Key="DownArrowIcon" Source="/Assets/down-arrow.ico" />
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -76,18 +78,14 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="btnAdd"
-            Content="+"
-            FontSize="25"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
-            HorizontalAlignment="Left"
-            Margin="709,10,0,0"
-            VerticalAlignment="Top"
-            Height="42"
-            Width="65"
-            Style="{StaticResource PrimaryButton}" Click="BtnAddClick"
-        />
+        <Button x:Name="btnAdd" Click="BtnAddClick" Content="{StaticResource AddIcon}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="41" Height="41" Margin="735,5,-25,282">
+            <Button.ContextMenu>
+                <ContextMenu x:Name="cmAddItem">
+                    <MenuItem x:Name="miAddBook" Header="Add Book" Click="AddBookMenuItemClick" />
+                    <MenuItem x:Name="miAddDvd" Header="Add DVD" Click="AddDvdMenuItemClick" />
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
         <Button x:Name="btnRefresh" Content="{StaticResource RefreshIcon}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Margin="22,16,0,0" VerticalAlignment="Top" Height="36" Width="38" Click="BtnRefreshClick" />
 
         <Grid Grid.Row="1" Background="#EFEFEF">

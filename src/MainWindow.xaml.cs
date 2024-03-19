@@ -108,8 +108,10 @@ namespace LibraryManagementSystem
 
         private void BtnAddClick(object sender, RoutedEventArgs e)
         {
-            _addBookWindow.ShowDialog();
-            RefreshBooks();
+            if (sender is FrameworkElement addButton)
+            {
+                addButton.ContextMenu.IsOpen = true;
+            }
         }
 
         private void BtnRefreshClick(object sender, RoutedEventArgs e)
@@ -173,6 +175,17 @@ namespace LibraryManagementSystem
             RefreshBooks();
 
             Utilities.ShowPopup($"Book \"{book}\" has been checked out!");
+        }
+
+        private void AddBookMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            _addBookWindow.ShowDialog();
+            RefreshBooks();
+        }
+
+        private void AddDvdMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            // TODO: create 'Add DVD' window & show here
         }
     }
 }

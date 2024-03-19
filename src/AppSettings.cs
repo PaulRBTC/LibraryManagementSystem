@@ -8,6 +8,7 @@
         public string DatabasePassword { get; set; }
         public string DatabaseInitialCatalog { get; set; }
         public string BooksTableName { get; set; }
+        public string DvdsTableName { get; set; }
 
         public Models.ConnectionString DatabaseConnectionString => new(
             DatabaseHostname,
