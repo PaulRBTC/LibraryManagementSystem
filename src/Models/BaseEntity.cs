@@ -13,7 +13,10 @@ namespace LibraryManagementSystem.Models
         [DbIgnore]
         public string Number => $"#{Id}";
 
+        [DbColumnName("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [DbColumnName("last_updated_at")]
         public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
 
     }

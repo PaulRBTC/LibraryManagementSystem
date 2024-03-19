@@ -129,7 +129,7 @@ namespace LibraryManagementSystem.Repositories.Base
 
                             if (propertyType == typeof(DateTime))
                             {
-                                stringValue = $"'{(DateTime)val:yyyy-MM-dd HH:mm}'";
+                                stringValue = $"'{(DateTime)val:yyyy-MM-dd HH:mm:ss}'";
                             }
                             else if (propertyType.IsPrimitive)
                             {
@@ -200,11 +200,17 @@ namespace LibraryManagementSystem.Repositories.Base
                         }
                         else
                         {
-                            if (property.PropertyType == typeof(DateTime))
+                            Type propertyType = property.PropertyType;
+                            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                             {
-                                stringValue = $"'{(DateTime)val:yyyy-MM-dd HH:mm}'";
+                                propertyType = propertyType.GetGenericArguments()[0];
                             }
-                            else if (property.PropertyType.IsPrimitive)
+
+                            if (propertyType == typeof(DateTime))
+                            {
+                                stringValue = $"'{(DateTime)val:yyyy-MM-dd HH:mm:ss}'";
+                            }
+                            else if (propertyType.IsPrimitive)
                             {
                                 stringValue = $"{val}";
                             }

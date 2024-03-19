@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LibraryManagementSystem.Services.Impl
 {
@@ -30,7 +31,11 @@ namespace LibraryManagementSystem.Services.Impl
 
         public bool UpdateBook(
             Models.Book newBook
-        ) => _repo.Update(newBook);
+        )
+        {
+            newBook.LastUpdatedAt = DateTime.UtcNow;
+            return _repo.Update(newBook);
+        }
 
     }
 }
