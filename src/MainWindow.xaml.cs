@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace LibraryManagementSystem
 {
@@ -114,6 +115,64 @@ namespace LibraryManagementSystem
         private void BtnRefreshClick(object sender, RoutedEventArgs e)
         {
             RefreshBooks();
+        }
+
+        private void lvBooksSelectionChanged(
+            object sender,
+            SelectionChangedEventArgs e
+        )
+        {
+            if (lvBooks.SelectedItem is not Models.Book book)
+            {
+                btnCheckIn.IsEnabled = false;
+                btnCheckOut.IsEnabled = false;
+                return;
+            }
+
+            if (book.IsCheckedIn)
+            {
+                btnCheckIn.IsEnabled = false;
+                btnCheckOut.IsEnabled = true;
+            }
+            else
+            {
+                btnCheckIn.IsEnabled = true;
+                btnCheckOut.IsEnabled = false;
+            }
+        }
+
+        private void BtnCheckInClick(object sender, RoutedEventArgs e)
+        {
+            if (lvBooks.SelectedItem is not Models.Book book)
+            {
+                return;
+            }
+
+            book.CheckIn();
+            _booksService.UpdateBook(book);
+
+            lvBooks.SelectedItems.Clear();
+
+            RefreshBooks();
+
+            Utilities.ShowPopup($"Book \"{book}\" has been checked in!");
+        }
+
+        private void BtnCheckOutClick(object sender, RoutedEventArgs e)
+        {
+            if (lvBooks.SelectedItem is not Models.Book book)
+            {
+                return;
+            }
+
+            book.CheckOut();
+            _booksService.UpdateBook(book);
+
+            lvBooks.SelectedItems.Clear();
+
+            RefreshBooks();
+
+            Utilities.ShowPopup($"Book \"{book}\" has been checked out!");
         }
     }
 }

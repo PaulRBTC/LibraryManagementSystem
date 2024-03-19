@@ -26,5 +26,16 @@ namespace LibraryManagementSystem.Models
             return $"{Number} - {Name}";
         }
 
+        public void CheckIn()
+        {
+            CheckedInAt = DateTime.UtcNow;
+            CheckedOutAt = null;
+        }
+
+        public void CheckOut()
+        {
+            CheckedOutAt = DateTime.UtcNow;
+        }
+
     }
 }

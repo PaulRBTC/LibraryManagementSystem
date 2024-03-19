@@ -121,11 +121,17 @@ namespace LibraryManagementSystem.Repositories.Base
                         }
                         else
                         {
-                            if (property.PropertyType == typeof(DateTime))
+                            Type propertyType = property.PropertyType;
+                            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                            {
+                                propertyType = propertyType.GetGenericArguments()[0];
+                            }
+
+                            if (propertyType == typeof(DateTime))
                             {
                                 stringValue = $"'{(DateTime)val:yyyy-MM-dd HH:mm}'";
                             }
-                            else if (property.PropertyType.IsPrimitive)
+                            else if (propertyType.IsPrimitive)
                             {
                                 stringValue = $"{val}";
                             }

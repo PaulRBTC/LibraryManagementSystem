@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:LibraryManagementSystem"
         xmlns:conv="clr-namespace:LibraryManagementSystem.Converters"
         mc:Ignorable="d"
-        Title="Library Management System" Height="450" Width="800">
+        Title="Library Management System" Height="450" Width="800"
+        Icon="/Assets/book.ico">
     <Window.Resources>
         <conv:BoolToCheckmarkConverter x:Key="BoolToCheckmarkConverter"></conv:BoolToCheckmarkConverter>
         <Image x:Key="RefreshIcon" Source="/Assets/refresh.ico" />
@@ -15,8 +16,13 @@
         </Style>
     </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <Label x:Name="lblTitle" Content="Library Management System" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.397,-0.143" Width="336" FontSize="24" FontStretch="SemiCondensed"/>
-        <ListView x:Name="lvBooks" Margin="10,57,10,10" ItemsSource="{Binding Books}">
+        <ListView x:Name="lvBooks" Margin="10,57,10,10" ItemsSource="{Binding Books}" SelectionChanged="lvBooksSelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="#" DisplayMemberBinding="{Binding Number}" Width="30" />
@@ -83,5 +89,15 @@
             Style="{StaticResource PrimaryButton}" Click="BtnAddClick"
         />
         <Button x:Name="btnRefresh" Content="{StaticResource RefreshIcon}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Margin="22,16,0,0" VerticalAlignment="Top" Height="36" Width="38" Click="BtnRefreshClick" />
+
+        <Grid Grid.Row="1" Background="#EFEFEF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnCheckIn" Content="Check In" HorizontalAlignment="Left" Grid.Column="1" Margin="5" VerticalAlignment="Top" Height="55" Width="142" Style="{StaticResource SuccessButton}" IsEnabled="False" Click="BtnCheckInClick" />
+            <Button x:Name="btnCheckOut" Content="Check Out" HorizontalAlignment="Left" Grid.Column="2" Margin="5" VerticalAlignment="Top" Height="55" Width="142" Style="{StaticResource DangerButton}" IsEnabled="False" Click="BtnCheckOutClick" />
+        </Grid>
     </Grid>
 </Window>
