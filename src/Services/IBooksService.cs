@@ -1,19 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.Services
 {
     public interface IBooksService
     {
 
-        Models.Book? GetBook(long bookId);
+        Task<Models.Book>? GetBook(long bookId);
 
-        List<Models.Book> GetAllBooks();
+        IAsyncEnumerable<Models.Book> GetAllBooks();
 
-        bool UpdateBook(Models.Book newBook);
+        Task<bool> UpdateBook(Models.Book newBook);
 
-        bool DeleteBook(long bookId);
+        Task<bool> DeleteBook(long bookId);
 
-        Models.Book CreateBook(Models.Book newBook);
+        Task<Models.Book> CreateBook(Models.Book newBook);
+
+        Task<bool> CheckBookIn(
+            long id
+        );
+
+        Task<bool> CheckBookOut(
+            long id
+        );
 
     }
 }

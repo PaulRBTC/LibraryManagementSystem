@@ -1,4 +1,4 @@
-﻿<Window x:Class="LibraryManagementSystem.MainWindow"
+﻿<Window x:Class="LibraryManagementSystem.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:LibraryManagementSystem"
         xmlns:conv="clr-namespace:LibraryManagementSystem.Converters"
         mc:Ignorable="d"
-        Title="Library Management System" Height="450" Width="800"
+        Title="Library Management System" Height="500" Width="800"
         Icon="/Assets/book.ico">
     <Window.Resources>
         <conv:BoolToCheckmarkConverter x:Key="BoolToCheckmarkConverter"></conv:BoolToCheckmarkConverter>
         <Image x:Key="RefreshIcon" Source="/Assets/refresh.ico" />
         <Image x:Key="AddIcon" Source="/Assets/plus.ico" />
         <Image x:Key="DownArrowIcon" Source="/Assets/down-arrow.ico" />
+        <Image x:Key="CloseIcon" Source="/Assets/close.ico" />
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -21,15 +22,29 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <Label x:Name="lblTitle" Content="Library Management System" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.397,-0.143" Width="336" FontSize="24" FontStretch="SemiCondensed"/>
-        <ListView x:Name="lvBooks" Margin="10,57,10,10" ItemsSource="{Binding Books}" SelectionChanged="lvBooksSelectionChanged">
+
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Close" Click="FileMenuCloseClick" Icon="{StaticResource CloseIcon}" />
+                    <MenuItem Header="_Refresh" Click="FileMenuRefreshClick" Icon="{StaticResource RefreshIcon}" />
+                    <MenuItem Header="_Add" Icon="{StaticResource AddIcon}" >
+                        <MenuItem Header="Add _Book" Click="AddBookMenuItemClick" />
+                        <MenuItem Header="Add _DVD" Click="AddDvdMenuItemClick" />
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <Label x:Name="lblTitle" Content="Library Management System" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.397,-0.143" Width="336" FontSize="24" FontStretch="SemiCondensed"/>
+        <ListView x:Name="lvBooks" Margin="10,59,10,8" ItemsSource="{Binding ListItems}" SelectionChanged="LvBooksSelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="#" DisplayMemberBinding="{Binding Number}" Width="30" />
-                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Name}" Width="214" />
-                    <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author}" Width="195" />
+                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="214" />
+                    <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Owner}" Width="195" />
                     <GridViewColumn Header="Checked In?" Width="170">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -37,7 +52,7 @@
                                     Text="{Binding IsCheckedIn,Converter={StaticResource BoolToCheckmarkConverter}}"
                                     HorizontalAlignment="Center"
                                     TextAlignment="Center"
-                                    />
+                                />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -53,7 +68,7 @@
                                     Width="75"
                                     FontSize="12"
                                     Style="{StaticResource WarningButton}"
-                                    Click="EditButtonClicked"
+                                    Click="BtnEditClick"
                                 />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -70,7 +85,7 @@
                                     Width="75"
                                     FontSize="12"
                                     Style="{StaticResource DangerButton}"
-                                    Click="DeleteButtonClick"
+                                    Click="BtnDeleteClick"
                                 />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -78,15 +93,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="btnAdd" Click="BtnAddClick" Content="{StaticResource AddIcon}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="41" Height="41" Margin="735,5,-25,282">
-            <Button.ContextMenu>
-                <ContextMenu x:Name="cmAddItem">
-                    <MenuItem x:Name="miAddBook" Header="Add Book" Click="AddBookMenuItemClick" />
-                    <MenuItem x:Name="miAddDvd" Header="Add DVD" Click="AddDvdMenuItemClick" />
-                </ContextMenu>
-            </Button.ContextMenu>
-        </Button>
-        <Button x:Name="btnRefresh" Content="{StaticResource RefreshIcon}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Margin="22,16,0,0" VerticalAlignment="Top" Height="36" Width="38" Click="BtnRefreshClick" />
 
         <Grid Grid.Row="1" Background="#EFEFEF">
             <Grid.ColumnDefinitions>

@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace LibraryManagementSystem
+namespace LibraryManagementSystem.Windows
 {
     /// <summary>
-    /// Interaction logic for EditBookWindow.xaml
+    /// Interaction logic for AddBookWindow.xaml
     /// </summary>
-    public partial class EditBookWindow : Window
+    public partial class AddBookWindow : Window
     {
 
         private const int GWL_STYLE = -16;
@@ -21,9 +21,7 @@ namespace LibraryManagementSystem
 
         private readonly Services.IBooksService _booksService;
 
-        private Models.Book? _editingBook;
-
-        public EditBookWindow(
+        public AddBookWindow(
             Services.IBooksService booksService
         )
         {
@@ -47,15 +45,8 @@ namespace LibraryManagementSystem
             e.Cancel = true;
         }
 
-        public void SetBookToEdit(Models.Book book)
-        {
-            _editingBook = book;
-            this.DataContext = book;
-        }
-
         private void ClearFieldsAndHide()
         {
-            _editingBook = null;
             tbBookTitle.Clear();
             tbBookAuthor.Clear();
 
@@ -72,12 +63,13 @@ namespace LibraryManagementSystem
             string bookTitle = tbBookTitle.Text;
             string bookAuthor = tbBookAuthor.Text;
 
-            _editingBook.Name = bookTitle;
-            _editingBook.Author = bookAuthor;
+            _booksService.CreateBook(new Models.Book
+            {
+                Name = bookTitle,
+                Author = bookAuthor,
+            });
 
-            _booksService.UpdateBook(_editingBook);
-
-            Utilities.ShowPopup($"Book \"{bookTitle}\" has been edited!");
+            Utilities.ShowPopup($"Book \"{bookTitle}\" has been added!");
 
             ClearFieldsAndHide();
         }

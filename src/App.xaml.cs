@@ -25,7 +25,7 @@ namespace LibraryManagementSystem
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
-            var mainWindow = ServiceProvider.GetService<MainWindow>();
+            var mainWindow = ServiceProvider.GetService<Windows.MainWindow>();
             if (mainWindow != null)
             {
                 mainWindow.Show();
@@ -45,15 +45,23 @@ namespace LibraryManagementSystem
                 configuration.GetSection("GlobalSettings").Bind(settings);
             });
 
-            services.AddTransient<MainWindow>();
-            services.AddTransient<AddBookWindow>();
-            services.AddTransient<EditBookWindow>();
+            services.AddTransient<Windows.MainWindow>();
+
+            services.AddTransient<Windows.AddBookWindow>();
+            services.AddTransient<Windows.EditBookWindow>();
+
+            services.AddTransient<Windows.AddDvdWindow>();
+            services.AddTransient<Windows.EditDvdWindow>();
+
 
             services.AddTransient<Factories.IBookFactory, Factories.Impl.BookFactory>();
+            services.AddTransient<Factories.IDvdFactory, Factories.Impl.DvdFactory>();
             
             services.AddTransient<Repositories.IBooksRepository, Repositories.Impl.BooksRepository>();
+            services.AddTransient<Repositories.IDvdsRepository, Repositories.Impl.DvdsRepository>();
 
             services.AddTransient<Services.IBooksService, Services.Impl.BooksService>();
+            services.AddTransient<Services.IDvdsService, Services.Impl.DvdsService>();
         }
 
     }

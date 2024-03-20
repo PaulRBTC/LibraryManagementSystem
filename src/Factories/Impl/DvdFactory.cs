@@ -3,18 +3,18 @@ using System.Data.Common;
 
 namespace LibraryManagementSystem.Factories.Impl
 {
-    public class BookFactory : IBookFactory
+    public class DvdFactory : IDvdFactory
     {
 
-        public Models.Book BuildEntityFromReader(
+        public Models.Dvd BuildEntityFromReader(
             DbDataReader reader
         )
         {
-            return new Models.Book
+            return new Models.Dvd
             {
                 Id = reader.GetColumnValue("id").ToLong(),
                 Name = reader.GetColumnValue("name"),
-                Author = reader.GetColumnValue("author"),
+                Director = reader.GetColumnValue("director"),
                 CheckedInAt = reader.GetColumnValue("checked_in_at").ToDateTime(),
                 CheckedOutAt = reader.GetColumnValue("checked_out_at").ToNullableDateTime(),
                 CreatedAt = reader.GetColumnValue("created_at").ToDateTime(),

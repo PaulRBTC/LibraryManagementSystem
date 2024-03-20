@@ -1,0 +1,18 @@
+﻿<Window x:Class="LibraryManagementSystem.Windows.AddDvdWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LibraryManagementSystem"
+        mc:Ignorable="d"
+        Title="Add DVD" Height="450" Width="800">
+    <Grid Margin="2,0,-2,0">
+        <Label x:Name="lblTitle" Content="Add New DVD" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="0,11,0,0" VerticalAlignment="Top" Width="780" FontSize="24" FontWeight="Normal"/>
+        <Label Content="What is the name of the DVD?" HorizontalAlignment="Left" Margin="53,87,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox x:Name="tbDvdName" HorizontalAlignment="Left" Margin="53,123,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="676" Height="34"/>
+        <Label Content="Who is the director of the DVD?" HorizontalAlignment="Left" Margin="53,179,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox x:Name="tbDvdDirector" HorizontalAlignment="Left" Margin="53,217,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="676" Height="34"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="391,319,0,0" VerticalAlignment="Top" Height="60" Width="160" Style="{StaticResource DangerButton}" Click="BtnCancelClick" />
+        <Button x:Name="btnSubmit" Content="Add DVD!" HorizontalAlignment="Left" Margin="224,319,0,0" VerticalAlignment="Top" Height="60" Width="160" Style="{StaticResource SuccessButton}" Click="BtnSubmitClick"/>
+    </Grid>
+</Window>

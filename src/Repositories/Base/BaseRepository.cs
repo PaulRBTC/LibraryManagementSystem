@@ -1,8 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.Repositories.Base
 {
@@ -25,7 +27,7 @@ namespace LibraryManagementSystem.Repositories.Base
             _entityFactory = entityFactory;
         }
 
-        public T? Get(long id)
+        public async Task<T?> Get(long id)
         {
             T result = null;
             using (var connection = new MySqlConnection($"{ConnectionString}"))
@@ -35,7 +37,7 @@ namespace LibraryManagementSystem.Repositories.Base
                 var cmd = new MySqlCommand($"SELECT * FROM {TableName} WHERE id = @id", connection);
                 cmd.Parameters.AddWithValue("id", id);
 
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     while (reader.Read())
                     {
@@ -47,29 +49,25 @@ namespace LibraryManagementSystem.Repositories.Base
             return result;
         }
 
-        public List<T> GetAll()
+        public async IAsyncEnumerable<T> GetAll()
         {
-            List<T> results = new();
-
             using (var connection = new MySqlConnection($"{ConnectionString}"))
             {
                 connection.Open();
 
                 var cmd = new MySqlCommand($"SELECT * FROM {TableName}", connection);
 
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     while(reader.Read())
                     {
-                        results.Add(BuildEntityFromReader(reader));
+                        yield return BuildEntityFromReader(reader);
                     }
                 }
             }
-
-            return results;
         }
 
-        public bool Update(T @new)
+        public async Task<bool> Update(T @new)
         {
             using (var connection = new MySqlConnection($"{ConnectionString}"))
             {
@@ -154,13 +152,13 @@ namespace LibraryManagementSystem.Repositories.Base
                 query += $" WHERE {primaryKeyColumn} = {primaryKeyValue}";
 
                 var cmd = new MySqlCommand(query, connection);
-                var rowsAffected = cmd.ExecuteNonQuery();
+                var rowsAffected = await cmd.ExecuteNonQueryAsync();
 
                 return rowsAffected > 0;
             }
         }
 
-        public T Create(T @new)
+        public async Task<T> Create(T @new)
         {
             using (var connection = new MySqlConnection($"{ConnectionString}"))
             {
@@ -228,7 +226,7 @@ namespace LibraryManagementSystem.Repositories.Base
                 string query = $"INSERT INTO {TableName} ({string.Join(", ", columnNames)}) VALUES ({string.Join(", ", values)})";
                 var cmd = new MySqlCommand(query, connection);
 
-                var rowsAffected = cmd.ExecuteNonQuery();
+                var rowsAffected = await cmd.ExecuteNonQueryAsync();
 
                 if (rowsAffected > 0)
                 {
@@ -245,7 +243,7 @@ namespace LibraryManagementSystem.Repositories.Base
             }
         }
 
-        public bool Delete(long id)
+        public async Task<bool> Delete(long id)
         {
             using (var connection = new MySqlConnection($"{ConnectionString}"))
             {
@@ -254,13 +252,13 @@ namespace LibraryManagementSystem.Repositories.Base
                 var cmd = new MySqlCommand($"DELETE FROM {TableName} WHERE id = @id", connection);
                 cmd.Parameters.AddWithValue("id", id);
 
-                var rowsAffected = cmd.ExecuteNonQuery();
+                var rowsAffected = await cmd.ExecuteNonQueryAsync();
 
                 return rowsAffected > 0;
             }
         }
 
-        private T BuildEntityFromReader(MySqlDataReader reader)
+        private T BuildEntityFromReader(DbDataReader reader)
         {
             return this._entityFactory.BuildEntityFromReader(reader);
         }

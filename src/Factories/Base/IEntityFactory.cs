@@ -1,11 +1,11 @@
-﻿using MySql.Data.MySqlClient;
+﻿using System.Data.Common;
 
 namespace LibraryManagementSystem.Factories.Base
 {
     public interface IEntityFactory<T> where T : class, new()
     {
 
-        T BuildEntityFromReader(MySqlDataReader reader);
+        T BuildEntityFromReader(DbDataReader reader);
 
     }
 }

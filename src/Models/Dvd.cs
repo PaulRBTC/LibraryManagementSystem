@@ -2,14 +2,14 @@
 
 namespace LibraryManagementSystem.Models
 {
-    public class Book : BaseEntity
+    public class Dvd : BaseEntity
     {
 
         [DbColumnName("name")]
         public string Name { get; set; }
 
-        [DbColumnName("author")]
-        public string Author { get; set; }
+        [DbColumnName("director")]
+        public string Director { get; set; }
 
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.Repositories
 {
     public interface IBooksRepository
     {
 
-        Models.Book? Get(long id);
+        Task<Models.Book>? Get(long id);
 
-        List<Models.Book> GetAll();
+        IAsyncEnumerable<Models.Book> GetAll();
 
-        bool Update(Models.Book @new);
+        Task<bool> Update(Models.Book @new);
 
-        Models.Book Create(Models.Book @new);
+        Task<Models.Book> Create(Models.Book @new);
 
-        bool Delete(long id);
+        Task<bool> Delete(long id);
 
     }
 }

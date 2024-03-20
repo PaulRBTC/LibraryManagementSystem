@@ -1,15 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace LibraryManagementSystem
+namespace LibraryManagementSystem.Windows
 {
     /// <summary>
-    /// Interaction logic for AddBookWindow.xaml
+    /// Interaction logic for EditDvdWindow.xaml
     /// </summary>
-    public partial class AddBookWindow : Window
+    public partial class EditDvdWindow : Window
     {
 
         private const int GWL_STYLE = -16;
@@ -19,13 +20,15 @@ namespace LibraryManagementSystem
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        private readonly Services.IBooksService _booksService;
+        private readonly Services.IDvdsService _dvdsService;
 
-        public AddBookWindow(
-            Services.IBooksService booksService
+        private Models.Dvd? _editingDvd;
+
+        public EditDvdWindow(
+            Services.IDvdsService dvdsService
         )
         {
-            _booksService = booksService;
+            _dvdsService = dvdsService;
 
             InitializeComponent();
 
@@ -45,10 +48,18 @@ namespace LibraryManagementSystem
             e.Cancel = true;
         }
 
+        public async Task SetDvdToEdit(long id)
+        {
+            Models.Dvd dvd = await _dvdsService.GetDvd(id);
+            _editingDvd = dvd;
+            this.DataContext = dvd;
+        }
+
         private void ClearFieldsAndHide()
         {
-            tbBookTitle.Clear();
-            tbBookAuthor.Clear();
+            _editingDvd = null;
+            tbDvdName.Clear();
+            tbDvdDirector.Clear();
 
             this.Hide();
         }
@@ -60,16 +71,15 @@ namespace LibraryManagementSystem
 
         private void BtnSubmitClick(object sender, RoutedEventArgs e)
         {
-            string bookTitle = tbBookTitle.Text;
-            string bookAuthor = tbBookAuthor.Text;
+            string dvdName = tbDvdName.Text;
+            string dvdDirector = tbDvdDirector.Text;
 
-            _booksService.CreateBook(new Models.Book
-            {
-                Name = bookTitle,
-                Author = bookAuthor,
-            });
+            _editingDvd.Name = dvdName;
+            _editingDvd.Director = dvdDirector;
 
-            Utilities.ShowPopup($"Book \"{bookTitle}\" has been added!");
+            _dvdsService.UpdateDvd(_editingDvd);
+
+            Utilities.ShowPopup($"DVD \"{dvdName}\" has been edited!");
 
             ClearFieldsAndHide();
         }
