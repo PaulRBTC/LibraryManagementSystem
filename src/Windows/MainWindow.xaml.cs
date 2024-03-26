@@ -161,9 +161,9 @@ namespace LibraryManagementSystem.Windows
             SelectionChangedEventArgs e
         )
         {
-            if (lvBooks.SelectedItem is Models.BaseEntity entity)
+            if (lvBooks.SelectedItem is Models.ListViewModel lvm)
             {
-                if (entity.IsCheckedIn)
+                if (lvm.IsCheckedIn)
                 {
                     btnCheckIn.IsEnabled = false;
                     btnCheckOut.IsEnabled = true;
@@ -173,12 +173,12 @@ namespace LibraryManagementSystem.Windows
                     btnCheckIn.IsEnabled = true;
                     btnCheckOut.IsEnabled = false;
                 }
+
+                return;
             }
-            else
-            {
-                btnCheckIn.IsEnabled = false;
-                btnCheckOut.IsEnabled = false;
-            }
+            
+            btnCheckIn.IsEnabled = false;
+            btnCheckOut.IsEnabled = false;
         }
 
         private async void BtnCheckInClick(object sender, RoutedEventArgs e)

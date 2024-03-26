@@ -258,6 +258,36 @@ namespace LibraryManagementSystem.Repositories.Base
             }
         }
 
+        public async Task<bool> CheckIn(long id)
+        {
+            using (var connection = new MySqlConnection($"{ConnectionString}"))
+            {
+                connection.Open();
+
+                var cmd = new MySqlCommand($"UPDATE {TableName} SET checked_in_at = '{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}', checked_out_at = NULL WHERE id = @id", connection);
+                cmd.Parameters.AddWithValue("id", id);
+
+                var rowsAffected = await cmd.ExecuteNonQueryAsync();
+
+                return rowsAffected > 0;
+            }
+        }
+
+        public async Task<bool> CheckOut(long id)
+        {
+            using (var connection = new MySqlConnection($"{ConnectionString}"))
+            {
+                connection.Open();
+
+                var cmd = new MySqlCommand($"UPDATE {TableName} SET checked_out_at = '{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}' WHERE id = @id", connection);
+                cmd.Parameters.AddWithValue("id", id);
+
+                var rowsAffected = await cmd.ExecuteNonQueryAsync();
+
+                return rowsAffected > 0;
+            }
+        }
+
         private T BuildEntityFromReader(DbDataReader reader)
         {
             return this._entityFactory.BuildEntityFromReader(reader);

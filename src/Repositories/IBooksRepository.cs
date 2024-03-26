@@ -16,5 +16,9 @@ namespace LibraryManagementSystem.Repositories
 
         Task<bool> Delete(long id);
 
+        Task<bool> CheckIn(long id);
+
+        Task<bool> CheckOut(long id);
+
     }
 }

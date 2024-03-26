@@ -38,34 +38,13 @@ namespace LibraryManagementSystem.Services.Impl
             return _repo.Update(newDvd);
         }
 
-        public async Task<bool> CheckDvdIn(
+        public Task<bool> CheckDvdIn(
             long id
-        )
-        {
-            var book = await GetDvd(id);
-            if (book != null)
-            {
-                book.CheckedInAt = DateTime.UtcNow;
-                book.CheckedOutAt = null;
-                return await UpdateDvd(book);
-            }
+        ) => _repo.CheckIn(id);
 
-            return false;
-        }
-
-        public async Task<bool> CheckDvdOut(
+        public Task<bool> CheckDvdOut(
             long id
-        )
-        {
-            var book = await GetDvd(id);
-            if (book != null)
-            {
-                book.CheckedOutAt = DateTime.UtcNow;
-                return await UpdateDvd(book);
-            }
-
-            return false;
-        }
+        ) => _repo.CheckOut(id);
 
     }
 }

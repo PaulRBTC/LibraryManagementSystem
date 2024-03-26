@@ -38,34 +38,13 @@ namespace LibraryManagementSystem.Services.Impl
             return _repo.Update(newBook);
         }
 
-        public async Task<bool> CheckBookIn(
+        public Task<bool> CheckBookIn(
             long id
-        )
-        {
-            var book = await GetBook(id);
-            if (book != null)
-            {
-                book.CheckedInAt = DateTime.UtcNow;
-                book.CheckedOutAt = null;
-                return await UpdateBook(book);
-            }
+        ) => _repo.CheckIn(id);
 
-            return false;
-        }
-
-        public async Task<bool> CheckBookOut(
+        public Task<bool> CheckBookOut(
             long id
-        )
-        {
-            var book = await GetBook(id);
-            if (book != null)
-            {
-                book.CheckedOutAt = DateTime.UtcNow;
-                return await UpdateBook(book);
-            }
-
-            return false;
-        }
+        ) => _repo.CheckOut(id);
 
     }
 }
